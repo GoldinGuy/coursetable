@@ -79,8 +79,11 @@ const EvaluationResponses: React.FC<{
 
   const sortByLength = useCallback((responses) => {
     for (const key in responses) {
-      responses[key].sort(function (a: string[], b: string[]) {
-        return b.length - a.length;
+      responses[key].sort(function (
+        a: { comment: string; comment_compound: number },
+        b: { comment: string; comment_compound: number }
+      ) {
+        return b.comment.length - a.comment.length;
       });
     }
     return responses;
