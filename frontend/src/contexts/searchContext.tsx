@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { DateTime } from 'luxon';
 import posthog from 'posthog-js';
 import React, {
   createContext,
@@ -20,25 +19,25 @@ import {
   useFerry,
 } from '../components/Providers/FerryProvider';
 import {
+  areas,
+  AreasType,
+  searchSpeed,
+  skills,
+  SkillsType,
+  SortByOption,
+  sortbyOptions,
+  SortKeys,
+} from '../queries/Constants';
+import {
+  getDayTimes,
   getEnrolled,
   getNumFB,
   getOverallRatings,
-  getDayTimes,
   getWorkloadRatings,
   sortCourses,
   toRangeTime,
   toSeasonString,
 } from '../utilities/courseUtilities';
-import {
-  areas,
-  AreasType,
-  skills,
-  SkillsType,
-  sortbyOptions,
-  SortKeys,
-  searchSpeed,
-  SortByOption,
-} from '../queries/Constants';
 import { useUser } from './userContext';
 
 // Option type for all the filter options
@@ -134,21 +133,22 @@ type Store = {
 const SearchContext = createContext<Store | undefined>(undefined);
 SearchContext.displayName = 'SearchContext';
 
-// Calculate upcoming season
-const dt = DateTime.now().setZone('America/New_York');
-let { year } = dt;
-let season: number;
-// Starting in October look at next year spring
-if (dt.month >= 10) {
-  season = 1;
-  year += 1;
-  // Starting in March look at this year fall
-} else if (dt.month >= 3) {
-  season = 3;
-} else {
-  season = 1;
-}
-const def_season_code = `${year}0${season}`;
+// // Calculate upcoming season
+// const dt = DateTime.now().setZone('America/New_York');
+// let { year } = dt;
+// let season: number;
+// // Starting in October look at next year spring
+// if (dt.month >= 10) {
+//   season = 1;
+//   year += 1;
+//   // Starting in March look at this year fall
+// } else if (dt.month >= 3) {
+//   season = 3;
+// } else {
+//   season = 1;
+// }
+// UPDATE THIS MANUALLY
+const def_season_code = '202201';
 
 // Default filter and sorting values
 const defaultOption: Option = { label: '', value: '' };

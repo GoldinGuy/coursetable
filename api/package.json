@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@prisma/client": "^3.4.0",
-    "@sentry/node": "^6.11.0",
+    "@sentry/node": "^6.16.1",
     "@sentry/tracing": "^6.13.2",
     "@types/app-root-path": "^1.2.4",
     "@types/axios": "^0.14.0",
@@ -31,7 +31,7 @@
     "@types/passport": "^1.0.7",
     "@types/psl": "^1.1.0",
     "app-root-path": "^3.0.0",
-    "axios": "^0.21.4",
+    "axios": "^0.25.0",
     "cookie-parser": "^1.4.5",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
