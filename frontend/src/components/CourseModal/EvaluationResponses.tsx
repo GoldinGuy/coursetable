@@ -7,6 +7,11 @@ import { SearchEvaluationNarrativesQuery } from '../../generated/graphql';
 import Mark from 'mark.js';
 import chroma from 'chroma-js';
 
+// Hover tooltip
+$(function () {
+  ($('[data-toggle="tooltip"]') as any).tooltip();
+});
+
 // Color gradient for evaluation sentiment scores
 const positivityColormap = chroma
   .scale(['#f54242', '#f5f542', '#00E800'])
@@ -289,6 +294,9 @@ const EvaluationResponses: React.FC<{
             // @ts-ignore
             active={sort_order === 'negativity'}
             onClick={() => setSortOrder('negativity')}
+            data-toggle="tooltip"
+            data-placement="right"
+            title="Tooltip on right"
           >
             negativity
           </StyledSortOption>
