@@ -1,16 +1,12 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { Tab, Row, Tabs } from 'react-bootstrap';
+import { Tab, Row, Tabs, OverlayTrigger, Tooltip, Popover } from 'react-bootstrap';
+import { MdHelpOutline } from 'react-icons/md';
 import styled from 'styled-components';
 import styles from './EvaluationResponses.module.css';
-import { StyledInput, TextComponent } from '../StyledComponents';
+import { StyledInput, TextComponent, StyledPopover } from '../StyledComponents';
 import { SearchEvaluationNarrativesQuery } from '../../generated/graphql';
 import Mark from 'mark.js';
 import chroma from 'chroma-js';
-
-// Hover tooltip
-$(function () {
-  ($('[data-toggle="tooltip"]') as any).tooltip();
-});
 
 // Color gradient for evaluation sentiment scores
 const positivityColormap = chroma
@@ -67,6 +63,17 @@ const StyledSortOption = styled.span`
     ) => (active ? 'rgba(92, 168, 250,0.5)' : theme.multivalue)};
     cursor: pointer;
   }
+`;
+
+// Tooltip icon for sentiment sorting
+const StyledTooltipIcon = styled(MdHelpOutline)<{
+  active: boolean;
+}>`
+  padding-left: 2px;
+  color: ${(
+    // @ts-ignore
+    { theme, active }
+  ) => (active ? theme.text[0] : theme.text[2])};
 `;
 
 /**
@@ -176,7 +183,7 @@ const EvaluationResponses: React.FC<{
       case 'positivity':
         cur_responses = pos_sorted_responses;
         break;
-      case 'negativity':
+      case 'negativity': // not used
         cur_responses = neg_sorted_responses;
         break;
       case 'length':
@@ -246,6 +253,32 @@ const EvaluationResponses: React.FC<{
     filter,
   ]);
 
+  // Render tooltip for sentiment sorting
+  const renderTooltip = (props: any) => (
+    <Tooltip id="sentiment-tooltip" {...props}>
+      <span>
+        We assess the sentiment (positivity/negativity) of each evaluation using
+        the VADER (Valence Aware Dictionary and Sentiment Reasoner) algorithm.
+        VADER is a lexicon and rule-based sentiment analysis tool that is
+        specifically attuned to sentiments expressed in social media. Read more
+        about it <a href="https://github.com/cjhutto/vaderSentiment">here</a>.
+      </span>
+    </Tooltip>
+  );
+
+  const renderSentimentPopover = (props: any) => {
+    return (
+      <StyledPopover {...props} id="sentiment_popover">
+        <Popover.Content>
+          We assess the sentiment (positivity) of each evaluation using the
+          VADER (Valence Aware Dictionary and Sentiment Reasoner) algorithm.
+          VADER is a lexicon and rule-based sentiment analysis tool that is
+          specifically attuned to sentiments expressed in social media.
+        </Popover.Content>
+      </StyledPopover>
+    );
+  };
+
   const context = document.querySelectorAll('.responses');
   const instance = new Mark(context);
 
@@ -289,16 +322,9 @@ const EvaluationResponses: React.FC<{
             onClick={() => setSortOrder('positivity')}
           >
             positivity
-          </StyledSortOption>
-          <StyledSortOption
-            // @ts-ignore
-            active={sort_order === 'negativity'}
-            onClick={() => setSortOrder('negativity')}
-            data-toggle="tooltip"
-            data-placement="right"
-            title="Tooltip on right"
-          >
-            negativity
+            <OverlayTrigger placement="right" overlay={renderSentimentPopover}>
+              <StyledTooltipIcon active={sort_order === 'positivity'} />
+            </OverlayTrigger>
           </StyledSortOption>
         </div>
       </Row>
