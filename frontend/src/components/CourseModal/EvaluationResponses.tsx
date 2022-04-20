@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { Tab, Row, Tabs, OverlayTrigger, Tooltip, Popover } from 'react-bootstrap';
+import { Tab, Row, Tabs, OverlayTrigger, Popover } from 'react-bootstrap';
 import { MdHelpOutline } from 'react-icons/md';
 import styled from 'styled-components';
 import styles from './EvaluationResponses.module.css';
@@ -65,8 +65,8 @@ const StyledSortOption = styled.span`
   }
 `;
 
-// Tooltip icon for sentiment sorting
-const StyledTooltipIcon = styled(MdHelpOutline)<{
+// Popover icon for sentiment sorting
+const StyledPopoverIcon = styled(MdHelpOutline)<{
   active: boolean;
 }>`
   padding-left: 2px;
@@ -253,27 +253,16 @@ const EvaluationResponses: React.FC<{
     filter,
   ]);
 
-  // Render tooltip for sentiment sorting
-  const renderTooltip = (props: any) => (
-    <Tooltip id="sentiment-tooltip" {...props}>
-      <span>
-        We assess the sentiment (positivity/negativity) of each evaluation using
-        the VADER (Valence Aware Dictionary and Sentiment Reasoner) algorithm.
-        VADER is a lexicon and rule-based sentiment analysis tool that is
-        specifically attuned to sentiments expressed in social media. Read more
-        about it <a href="https://github.com/cjhutto/vaderSentiment">here</a>.
-      </span>
-    </Tooltip>
-  );
-
+  // Render popover for sentiment sorting option
   const renderSentimentPopover = (props: any) => {
     return (
       <StyledPopover {...props} id="sentiment_popover">
         <Popover.Content>
-          We assess the sentiment (positivity) of each evaluation using the
-          VADER (Valence Aware Dictionary and Sentiment Reasoner) algorithm.
-          VADER is a lexicon and rule-based sentiment analysis tool that is
-          specifically attuned to sentiments expressed in social media.
+          We assess the sentiment of each evaluation using the <b>VADER</b>{' '}
+          algorithm: VADER (Valence Aware Dictionary and Sentiment Reasoner) is
+          a lexicon and rule-based sentiment analysis tool specifically attuned
+          to sentiments expressed in social media. Here, the sentiment of each
+          evaluation is indicated by the color gradient.
         </Popover.Content>
       </StyledPopover>
     );
@@ -323,7 +312,7 @@ const EvaluationResponses: React.FC<{
           >
             positivity
             <OverlayTrigger placement="right" overlay={renderSentimentPopover}>
-              <StyledTooltipIcon active={sort_order === 'positivity'} />
+              <StyledPopoverIcon active={sort_order === 'positivity'} />
             </OverlayTrigger>
           </StyledSortOption>
         </div>
