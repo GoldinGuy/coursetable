@@ -69,6 +69,69 @@ export const toggleBookmark = async (
 };
 
 /**
+ * Add a course to a user created worksheet.
+ *
+ * @param req - express request object
+ * @param res - express response object
+ */
+export const addToWorksheet = async (
+  req: express.Request,
+  res: express.Response
+): Promise<express.Response> => {
+  winston.info('Toggling course on user created worksheet');
+
+  if (!req.user) {
+    return res.status(401).json();
+  }
+
+  const { netId } = req.user;
+
+  const { action, season, ociId, worksheetId } = req.body;
+
+  POSTHOG_CLIENT.capture({
+    distinctId: netId,
+    event: 'toggle-user-worksheet',
+    properties: {
+      action,
+      season,
+      ociId,
+      worksheetId,
+    },
+  });
+
+  // Add a course
+  if (action === 'add') {
+    winston.info(
+      `Adding course ${ociId} in season ${season} for user ${netId} to worksheet ${worksheetId}`
+    );
+    await prisma.worksheetCourses.create({
+      data: {
+        net_id: netId,
+        oci_id: parseInt(ociId, 10),
+        season: parseInt(season, 10),
+        worksheet_id: worksheetId,
+      },
+    });
+  }
+  // Remove a bookmarked course
+  else if (action === 'remove') {
+    winston.info(
+      `Removing course ${ociId} in season ${season} for user ${netId} from worksheet ${worksheetId}`
+    );
+    await prisma.worksheetCourses.deleteMany({
+      where: {
+        net_id: netId,
+        oci_id: parseInt(ociId, 10),
+        season: parseInt(season, 10),
+        worksheet_id: worksheetId,
+      },
+    });
+  }
+
+  return res.json({ success: true });
+};
+
+/**
  * Get a user's personal worksheet.
  *
  * @param req - express request object
@@ -116,6 +179,7 @@ export const getUserWorksheet = async (
     data: worksheets.map((course) => [
       String(course.season),
       String(course.oci_id),
+      String(course.worksheet_id),
     ]),
   });
 };

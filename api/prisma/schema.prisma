@@ -41,11 +41,12 @@ model Students {
 }
 
 model WorksheetCourses {
-  id     Int    @id @default(autoincrement()) @db.UnsignedMediumInt
-  net_id String @db.Char(8)
-  oci_id Int    @db.UnsignedMediumInt
-  season Int    @db.UnsignedMediumInt
+  id           Int    @id @default(autoincrement()) @db.UnsignedMediumInt
+  net_id       String @db.Char(8)
+  oci_id       Int    @db.UnsignedMediumInt
+  season       Int    @db.UnsignedMediumInt
+  worksheet_id Int    @default(0) @db.MediumInt
 
-  @@unique([net_id, oci_id, season], name: "net_id_oci_id_season", map: "net_id_oci_id_season")
+  @@unique([net_id, oci_id, season, worksheet_id], map: "net_id_oci_id_season_worksheet_id")
   @@index([net_id], map: "net_id")
 }

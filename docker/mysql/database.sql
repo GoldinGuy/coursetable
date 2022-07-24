@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.1.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Aug 28, 2021 at 12:38 AM
--- Server version: 10.6.4-MariaDB-1:10.6.4+maria~focal
--- PHP Version: 7.4.20
+-- Generation Time: Jul 24, 2022 at 06:28 PM
+-- Server version: 10.6.5-MariaDB-1:10.6.5+maria~focal
+-- PHP Version: 8.0.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -79,7 +79,8 @@ CREATE TABLE `WorksheetCourses` (
   `id` mediumint(8) UNSIGNED NOT NULL,
   `net_id` char(8) NOT NULL,
   `oci_id` mediumint(8) UNSIGNED NOT NULL,
-  `season` mediumint(8) UNSIGNED NOT NULL
+  `season` mediumint(8) UNSIGNED NOT NULL,
+  `worksheet_id` mediumint(9) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
@@ -123,13 +124,13 @@ ALTER TABLE `WorksheetCourses`
 -- AUTO_INCREMENT for table `StudentFacebookFriends`
 --
 ALTER TABLE `StudentFacebookFriends`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59251421;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `WorksheetCourses`
 --
 ALTER TABLE `WorksheetCourses`
-  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1213985;
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
