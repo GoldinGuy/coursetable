@@ -86,7 +86,6 @@ const CourseList = styled(SurfaceComponent)`
 
 function WorksheetCalendarList() {
   const { courses, cur_season, hidden_courses, toggleCourse } = useWorksheet();
-
   // Build the HTML for the list of courses of a given season
   const items = useMemo(() => {
     // List to hold HTML

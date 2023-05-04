@@ -12,7 +12,8 @@ import { toast } from 'react-toastify';
 import { NetId, Season } from '../utilities/common';
 import { API_ENDPOINT } from '../config';
 
-export type Worksheet = [Season, string][];
+export type Worksheet = [Season, string, string][];
+export type Saved = [string][];
 export type FBFriendInfo = Record<
   NetId,
   {
@@ -33,22 +34,26 @@ type Store = {
     school?: string;
     fbLogin?: boolean;
     fbWorksheets?: FBInfo;
+    saved?: Saved;
   };
   userRefresh(suppressError?: boolean): Promise<void>;
   fbRefresh(suppressError?: boolean): Promise<void>;
+  savedRefresh(suppressError?: boolean): Promise<void>;
 };
 
 const UserContext = createContext<Store | undefined>(undefined);
 UserContext.displayName = 'UserContext';
 
 /**
- * Stores the user's worksheet, FB login status, and FB friends' worksheets
+ * Stores the user's worksheet, saved courses, FB login status, and FB friends' worksheets
  */
 export const UserProvider: React.FC = ({ children }) => {
   // User's netId
   const [netId, setNetId] = useState<string | undefined>(undefined);
   // User's worksheet
   const [worksheet, setWorksheet] = useState<Worksheet | undefined>(undefined);
+  // User's saved courses
+  const [saved, setSaved] = useState<Saved | undefined>(undefined);
   // User's evals enabled status
   const [hasEvals, setHasEvals] = useState<boolean | undefined>(undefined);
   // User's year
@@ -98,6 +103,30 @@ export const UserProvider: React.FC = ({ children }) => {
     },
     [setWorksheet, setNetId, setHasEvals, setYear, setSchool]
   );
+  // Refresh user saved courses
+  const savedRefresh = useCallback(
+    (suppressError = false): Promise<void> => {
+      return axios
+        .get(`${API_ENDPOINT}/api/user/saved`, { withCredentials: true })
+        .then((res) => {
+          if (!res.data.success) {
+            throw new Error(res.data.message);
+          }
+
+          // Successfully fetched saved courses
+          setSaved(res.data.data);
+        })
+        .catch((err) => {
+          // Error with fetching user's saved courses
+          setSaved(undefined);
+          Sentry.captureException(err);
+          if (!suppressError) {
+            toast.error('Error fetching saved courses');
+          }
+        });
+    },
+    [setSaved]
+  );
 
   // Refresh user FB stuff
   const fbRefresh = useCallback(
@@ -136,8 +165,9 @@ export const UserProvider: React.FC = ({ children }) => {
       school,
       fbLogin,
       fbWorksheets,
+      saved,
     };
-  }, [netId, worksheet, hasEvals, year, school, fbLogin, fbWorksheets]);
+  }, [netId, worksheet, hasEvals, year, school, fbLogin, fbWorksheets, saved]);
 
   const store = useMemo(
     () => ({
@@ -147,8 +177,9 @@ export const UserProvider: React.FC = ({ children }) => {
       // Update methods.
       userRefresh,
       fbRefresh,
+      savedRefresh,
     }),
-    [user, userRefresh, fbRefresh]
+    [user, userRefresh, fbRefresh, savedRefresh]
   );
 
   return <UserContext.Provider value={store}>{children}</UserContext.Provider>;

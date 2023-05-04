@@ -19,6 +19,7 @@ import FBLoginButton from './FBLoginButton';
 import styles from './Navbar.module.css';
 import { SurfaceComponent, SmallTextComponent } from '../StyledComponents';
 import { NavbarCatalogSearch } from './NavbarCatalogSearch';
+import { NavbarFriendSearch } from './NavbarFriendSearch';
 // import { useSearch } from '../searchContext';
 import { DateTime, Duration } from 'luxon';
 
@@ -132,6 +133,18 @@ function CourseTableNavbar({
   // Page state
   const [page, setPage] = useState('');
 
+  //which search
+
+  function chooseSearch(show_search, page) {
+    if (show_search && page === 'catalog') {
+      return <NavbarCatalogSearch />;
+    } else if (show_search && page === 'worksheet') {
+      return <NavbarWorksheetSearch />;
+    } else if (show_search && page === 'friends') {
+      return <NavbarFriendSearch />;
+    }
+  }
+
   // Navbar styling for navbar search
   const navbar_style = () => {
     if (show_search && page === 'catalog') {
@@ -166,6 +179,8 @@ function CourseTableNavbar({
       setPage('catalog');
     } else if (location && location.pathname === '/worksheet') {
       setPage('worksheet');
+    } else if (location && location.pathname === '/friends') {
+      setPage('friends');
     } else {
       setPage('');
     }
@@ -236,11 +251,14 @@ function CourseTableNavbar({
             <StyledNavToggle aria-controls="basic-navbar-nav" />
 
             {/* Desktop navbar search */}
-            {show_search && page === 'catalog' ? (
+            {/*show_search && page === 'catalog' ? (
               <NavbarCatalogSearch />
+            ) : show_search && page === 'worksheet' ? (
+              <NavbarWorksheetSearch />
             ) : (
-              show_search && page === 'worksheet' && <NavbarWorksheetSearch />
-            )}
+              <NavbarFriendSearch />
+            )*/}
+            {chooseSearch(show_search, page)}
 
             <NavCollapseWrapper>
               {/* Navbar collapse */}

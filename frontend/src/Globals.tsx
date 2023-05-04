@@ -27,6 +27,7 @@ import WindowDimensionsProvider from './components/Providers/WindowDimensionsPro
 import FerryProvider from './components/Providers/FerryProvider';
 import { UserProvider } from './contexts/userContext';
 import { SearchProvider } from './contexts/searchContext';
+import { FriendSearchProvider } from './contexts/searchFriendContext';
 import { WorksheetProvider } from './contexts/worksheetContext';
 
 import { isDev, API_ENDPOINT, POSTHOG_TOKEN, POSTHOG_OPTIONS } from './config';

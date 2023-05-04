@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 
 import { Badge, OverlayTrigger, Popover, Tooltip, Row } from 'react-bootstrap';
+import { BsBookmark, BsBookmarkFill } from 'react-icons/bs';
 
 import chroma from 'chroma-js';
 import { IoMdSunny } from 'react-icons/io';
@@ -15,6 +16,8 @@ import {
 } from '../../queries/Constants';
 
 import WorksheetToggleButton from '../Worksheet/WorksheetToggleButton';
+import BookmarkToggleButton from '../Worksheet/BookmarkToggleButton';
+
 import CourseConflictIcon from './CourseConflictIcon';
 import {
   TextComponent,
@@ -217,6 +220,8 @@ const ResultsItem = ({
     paddingLeft: !multiSeasons ? '15px' : '0px',
   };
   const title_style = { width: `${COL_SPACING.TITLE_WIDTH}px` };
+  const save_style = { width: `${COL_SPACING.SAVE_WIDTH}px` };
+
   const rate_overall_style = {
     whiteSpace: 'nowrap',
     width: `${COL_SPACING.RATE_OVERALL_WIDTH}px`,
@@ -290,6 +295,16 @@ const ResultsItem = ({
             <div className={Styles.ellipsis_text}>{course.title}</div>
           </div>
         </OverlayTrigger>
+        {/* Save For Later */}
+        <div style={save_style}>
+          <BookmarkToggleButton
+            crn={course.crn}
+            season_code={course.season_code}
+            modal={false}
+            course_code={course.course_code}
+            setCourseInWorksheet={setCourseInWorksheet}
+          />
+        </div>
         <div className="d-flex">
           {/* Overall Rating */}
           <RatingCell

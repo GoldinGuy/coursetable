@@ -1,0 +1,108 @@
+.container {
+  margin-bottom: 0px;
+  border: none;
+}
+
+.desktop_container {
+  min-height: 92vh;
+}
+
+.loading_spinner {
+  position: fixed;
+  top: calc(50% - 16px);
+  left: calc(50% - 16px);
+}
+/* 
+.calendar {
+} */
+
+.calendar_style_container {
+  box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  height: 86vh;
+  position: sticky;
+  top: calc(1rem + 56px);
+  border-radius: 8px;
+}
+
+/* DISABLE TRANSITION ANIMATIONS */
+
+.hidden {
+  display: none;
+}
+
+/* ----------------------------- */
+
+.accordion {
+  width: 100vw;
+  min-height: 100vh;
+}
+
+.expand_btn {
+  padding: 3px;
+  border-radius: 6px;
+}
+
+.expand_btn:hover {
+  cursor: pointer;
+}
+
+.expand_icon {
+  display: block;
+}
+
+.top_left {
+  left: 0%;
+  transform: rotateZ(90deg) translate(-40%, -85%);
+}
+
+.top_left:hover {
+  transform: rotateZ(90deg) translate(-40%, -85%) scale(1.1);
+}
+
+.top_right {
+  right: 0%;
+  transform: translate(50%, -40%);
+}
+
+.top_right:hover {
+  transform: translate(50%, -40%) scale(1.1);
+}
+
+.settings_dropdown {
+  position: absolute;
+  display: flex;
+  height: 50px;
+  top: 52px;
+  right: 0px;
+  z-index: 488;
+}
+
+:global .css-26l3qy-menu {
+  z-index: 1000 !important;
+}
+
+:global .css-yk16xz-control,
+:global .css-1pahdxg-control,
+:global .css-1fhf3k1-control {
+  z-index: calc(420 + 69);
+  border: none !important;
+  height: 38px !important;
+  cursor: pointer !important;
+}
+
+:global .css-1pahdxg-control {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+:global .css-1okebmr-indicatorSeparator,
+:global .css-109onse-indicatorSeparator {
+  display: none !important;
+}
+
+:global .css-1uccc91-singleValue,
+:global .css-107lb6w-singleValue {
+  font-size: 15px;
+  font-weight: 500;
+}

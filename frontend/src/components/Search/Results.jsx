@@ -6,6 +6,8 @@ import React, {
   useMemo,
 } from 'react';
 
+import { FaBookmark } from 'react-icons/fa';
+
 import ResultsItemMemo from './ResultsItem';
 import ResultsGridItem from './ResultsGridItem';
 
@@ -138,6 +140,7 @@ const Results = ({
   const COL_SPACING = useMemo(() => {
     const TEMP_COL_SPACING = {
       SZN_WIDTH: 60,
+      SAVE_WIDTH: 50,
       CODE_WIDTH: isLgDesktop ? 110 : 90,
       RATE_OVERALL_WIDTH: isLgDesktop ? 92 : 82,
       RATE_WORKLOAD_WIDTH: isLgDesktop ? 92 : 82,
@@ -151,6 +154,7 @@ const Results = ({
       ROW_WIDTH -
       (multiSeasons ? TEMP_COL_SPACING.SZN_WIDTH : 0) -
       TEMP_COL_SPACING.CODE_WIDTH -
+      TEMP_COL_SPACING.SAVE_WIDTH -
       TEMP_COL_SPACING.ENROLL_WIDTH -
       TEMP_COL_SPACING.FB_WIDTH -
       TEMP_COL_SPACING.RATE_OVERALL_WIDTH -
@@ -467,6 +471,10 @@ const Results = ({
     width: `${COL_SPACING.CODE_WIDTH}px`,
     paddingLeft: !multiSeasons ? '15px' : '0px',
   };
+
+  const save_style = {
+    width: `${COL_SPACING.SAVE_WIDTH}px`,
+  }; 
   const title_style = { width: `${COL_SPACING.TITLE_WIDTH}px` };
   const rate_overall_style = {
     whiteSpace: 'nowrap',
@@ -538,6 +546,7 @@ const Results = ({
                   {multiSeasons && (
                     <ResultsHeader style={szn_style}>Season</ResultsHeader>
                   )}
+     
                   {/* Course Code */}
                   <ResultsHeader style={code_style}>
                     <OverlayTrigger placement="bottom" overlay={code_tooltip}>
@@ -548,6 +557,7 @@ const Results = ({
                       key={reset_key}
                     />
                   </ResultsHeader>
+
                   {/* Course Name */}
                   <ResultsHeader style={title_style}>
                     <span className={Styles.one_line}>Title</span>
@@ -555,6 +565,16 @@ const Results = ({
                       selectOption={sortbyOptions[2]}
                       key={reset_key}
                     />
+                  </ResultsHeader>
+                               {/* Course Bookmark */}
+                               <ResultsHeader style={save_style}>
+                  {/*<div
+                    className={`${Styles.bookmark} d-flex ml-auto my-auto p-0`}
+                  >*/}
+                     <span className={Styles.one_line}> <FaBookmark className="m-auto" size={15} /></span>
+                     
+                   
+                  {/*</div>*/}
                   </ResultsHeader>
                   <div className="d-flex">
                     {/* Overall Rating */}

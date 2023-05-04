@@ -188,6 +188,16 @@ const MeDropdown: React.VFC<Props> = ({
                 </TextComponent>
               </Row>
             )}
+            {/* New Friends */}
+            {isLoggedIn && (
+              <Row className="pb-3 m-auto">
+                <TextComponent type={1}>
+                  <NavLink to="/friends" className={styles.collapse_text}>
+                    <StyledHoverText>Add Friends</StyledHoverText>
+                  </NavLink>
+                </TextComponent>
+              </Row>
+            )}
             {/* Connect FB button */}
             {isLoggedIn && (
               <Row className="pb-3 m-auto">

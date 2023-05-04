@@ -9,6 +9,7 @@ import CourseModalOverview from './CourseModalOverview';
 import CourseModalEvaluations from './CourseModalEvaluations';
 
 import WorksheetToggleButton from '../Worksheet/WorksheetToggleButton';
+
 import { useWindowDimensions } from '../Providers/WindowDimensionsProvider';
 
 import styles from './CourseModal.module.css';
@@ -16,6 +17,7 @@ import tag_styles from '../Search/ResultsItem.module.css';
 import { skillsAreasColors } from '../../queries/Constants';
 import { TextComponent, StyledLink } from '../StyledComponents';
 import { toSeasonString } from '../../utilities/courseUtilities';
+import { Link } from 'react-router-dom';
 
 // Course Modal
 const StyledModal = styled(Modal)`
@@ -75,7 +77,7 @@ const CourseModal = ({ listing, hideModal, show }) => {
   // Current listing that we are viewing overview info for
   const cur_listing =
     listings.length > 0 ? listings[listings.length - 1] : null;
-
+  console.log("here", listings);
   // Set which evaluation we are viewing
   const setSeason = useCallback((evaluation) => {
     setView([evaluation.season_code, evaluation]);
@@ -146,6 +148,13 @@ const CourseModal = ({ listing, hideModal, show }) => {
                           </StyledLink>
                         ))}
                     </Col>
+                    {/* Course URL */}
+                    <Link
+                      to={`/course/${cur_listing.season_code}/${cur_listing.crn}/${cur_listing.course_code}`}
+                      className="text-decoration-none"
+                    >
+                      here
+                    </Link>
                     <Col className="p-0 ml-3">
                       {/* Course Title */}
                       <Modal.Title>

@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import {
+  Switch,
+  Route,
+  Redirect,
+  withRouter,
+  useParams,
+} from 'react-router-dom';
 
 import { Row, Spinner } from 'react-bootstrap';
 import Notice from './components/Notice';
@@ -21,6 +27,8 @@ import Challenge from './pages/Challenge';
 import WorksheetLogin from './pages/WorksheetLogin';
 import Graphiql from './pages/Graphiql';
 import GraphiqlLogin from './pages/GraphiqlLogin';
+import Friends from './pages/Friends';
+import Course_comp from './pages/IndvCourse';
 
 import { useUser } from './contexts/userContext';
 import { useLocalStorageState } from './browserStorage';
@@ -38,18 +46,19 @@ function App({ themeToggler, location }) {
   // Page initialized as loading
   const [loading, setLoading] = useState(true);
   // User context data
-  const { user, userRefresh, fbRefresh } = useUser();
+  const { user, userRefresh, fbRefresh, savedRefresh } = useUser();
 
   // Refresh user worksheet and FB data on page load
   useEffect(() => {
     const a = userRefresh(true);
     const b = fbRefresh(true);
+    const c = savedRefresh(true);
 
     Promise.allSettled([a, b]).finally(() => {
       // Set loading to false after user info and fb info is fetched
       setLoading(false);
     });
-  }, [userRefresh, fbRefresh]);
+  }, [userRefresh, fbRefresh, savedRefresh]);
 
   // Determine if user is logged in
   const isLoggedIn = Boolean(user.worksheet != null);
@@ -58,6 +67,8 @@ function App({ themeToggler, location }) {
 
   // Tutorial state
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
+
+
 
   // First tutorial state
   const [shownTutorial, setShownTutorial] = useLocalStorageState(
@@ -166,6 +177,11 @@ function App({ themeToggler, location }) {
           <About />
         </MyRoute>
 
+        {/* Friends */}
+        <MyRoute exact path="/friends">
+          <Friends />
+        </MyRoute>
+
         {/* Catalog */}
         <MyRoute exact path="/catalog">
           {!isLoggedIn ? (
@@ -208,6 +224,15 @@ function App({ themeToggler, location }) {
         {/* Thank You */}
         <MyRoute exact path="/thankyou">
           <Thankyou />
+        </MyRoute>
+
+        {/* Course Links (course/season/crn) */}
+        <MyRoute exact path="/course/:season/:crn/:course_code">
+          {isLoggedIn && user.hasEvals ? (
+            <Course_comp />
+          ) : (
+            <Redirect to="/worksheetlogin" />
+          )}
         </MyRoute>
 
         {/* Footer Links */}
